@@ -1,0 +1,13 @@
+#!/bin/sh
+print_usage() {
+        echo -e "`basename $0` ssh_connexion local_script"
+        echo -e "Remote executes local_script on ssh server"
+        echo -e "For convinient use, use ssh public key for remote connexion"
+        exit 0
+}
+
+[ $# -eq "2" ] && [ $1 != "-h" ] && [ $1 != "--help" ] || print_usage
+
+INTERPRETER=$(head -n 1 $2 | sed -e 's/#!//')
+
+cat $2 | grep -v "#" | ssh -t $1 $INTERPRETER
